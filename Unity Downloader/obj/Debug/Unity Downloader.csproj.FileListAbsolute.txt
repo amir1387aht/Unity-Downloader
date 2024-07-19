@@ -1,0 +1,57 @@
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Unity Downloader.exe.config
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Unity Downloader.exe
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Unity Downloader.pdb
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Autofac.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Configuration.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Logging.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Options.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Primitives.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\PooledAwait.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Buffers.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Memory.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Reactive.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.ValueTuple.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\ZString.dll
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Autofac.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Configuration.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Logging.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Options.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Microsoft.Extensions.Primitives.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\PooledAwait.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Buffers.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Memory.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Reactive.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\System.ValueTuple.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\ZString.xml
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.csproj.AssemblyReference.cache
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.csproj.SuggestedBindingRedirects.cache
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.exe.config
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity_Downloader.AppDownloadForm.resources
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity_Downloader.MainForm.resources
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity_Downloader.Properties.Resources.resources
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.csproj.GenerateResource.cache
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.csproj.CoreCompileInputs.cache
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Do.C317F689.Up2Date
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.exe
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\obj\Debug\Unity Downloader.pdb
+C:\Users\Padidar\source\repos\Unity Downloader\Unity Downloader\bin\Debug\Downloader.dll
