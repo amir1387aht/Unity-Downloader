@@ -24,7 +24,7 @@ Main Screen
 
 Download Screen
 
-## Installation
+## Installation For Debugging
 
 1. **Clone the repository:**
 
