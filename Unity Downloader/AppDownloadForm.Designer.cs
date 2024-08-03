@@ -32,10 +32,6 @@ namespace Unity_Downloader
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AppDownloadForm));
-            this.ExplainText = new System.Windows.Forms.Label();
-            this.IDMButton = new System.Windows.Forms.Button();
-            this.InAppButton = new System.Windows.Forms.Button();
-            this.DownloadWithText = new System.Windows.Forms.Label();
             this.DownloadProgressBar = new System.Windows.Forms.ProgressBar();
             this.ProgressLabel = new System.Windows.Forms.Label();
             this.FileNameLabel = new System.Windows.Forms.Label();
@@ -47,58 +43,7 @@ namespace Unity_Downloader
             this.CancelButton = new System.Windows.Forms.Button();
             this.PendingLabel = new System.Windows.Forms.Label();
             this.LogsList = new System.Windows.Forms.ListBox();
-            this.ChoosePanel = new System.Windows.Forms.Panel();
-            this.ChoosePanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ExplainText
-            // 
-            this.ExplainText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExplainText.Font = new System.Drawing.Font("Yu Gothic UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExplainText.Location = new System.Drawing.Point(11, 139);
-            this.ExplainText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.ExplainText.Name = "ExplainText";
-            this.ExplainText.Size = new System.Drawing.Size(555, 290);
-            this.ExplainText.TabIndex = 11;
-            this.ExplainText.Text = resources.GetString("ExplainText.Text");
-            // 
-            // IDMButton
-            // 
-            this.IDMButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.IDMButton.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IDMButton.Location = new System.Drawing.Point(362, 75);
-            this.IDMButton.Margin = new System.Windows.Forms.Padding(4);
-            this.IDMButton.Name = "IDMButton";
-            this.IDMButton.Size = new System.Drawing.Size(193, 47);
-            this.IDMButton.TabIndex = 10;
-            this.IDMButton.Text = "IDM";
-            this.IDMButton.UseVisualStyleBackColor = true;
-            this.IDMButton.Click += new System.EventHandler(this.IDMButton_Click);
-            // 
-            // InAppButton
-            // 
-            this.InAppButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.InAppButton.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InAppButton.Location = new System.Drawing.Point(27, 75);
-            this.InAppButton.Margin = new System.Windows.Forms.Padding(4);
-            this.InAppButton.Name = "InAppButton";
-            this.InAppButton.Size = new System.Drawing.Size(193, 47);
-            this.InAppButton.TabIndex = 9;
-            this.InAppButton.Text = "In App";
-            this.InAppButton.UseVisualStyleBackColor = true;
-            this.InAppButton.Click += new System.EventHandler(this.InAppButton_Click);
-            // 
-            // DownloadWithText
-            // 
-            this.DownloadWithText.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DownloadWithText.Font = new System.Drawing.Font("Yu Gothic UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownloadWithText.Location = new System.Drawing.Point(167, 11);
-            this.DownloadWithText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.DownloadWithText.Name = "DownloadWithText";
-            this.DownloadWithText.Size = new System.Drawing.Size(255, 39);
-            this.DownloadWithText.TabIndex = 1;
-            this.DownloadWithText.Text = "Download With :";
             // 
             // DownloadProgressBar
             // 
@@ -220,26 +165,11 @@ namespace Unity_Downloader
             this.LogsList.Size = new System.Drawing.Size(522, 84);
             this.LogsList.TabIndex = 21;
             // 
-            // ChoosePanel
-            // 
-            this.ChoosePanel.Controls.Add(this.ExplainText);
-            this.ChoosePanel.Controls.Add(this.IDMButton);
-            this.ChoosePanel.Controls.Add(this.DownloadWithText);
-            this.ChoosePanel.Controls.Add(this.InAppButton);
-            this.ChoosePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ChoosePanel.ForeColor = System.Drawing.Color.Black;
-            this.ChoosePanel.Location = new System.Drawing.Point(0, 0);
-            this.ChoosePanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ChoosePanel.Name = "ChoosePanel";
-            this.ChoosePanel.Size = new System.Drawing.Size(582, 553);
-            this.ChoosePanel.TabIndex = 101;
-            // 
             // AppDownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(582, 553);
-            this.Controls.Add(this.ChoosePanel);
             this.Controls.Add(this.LogsList);
             this.Controls.Add(this.PendingLabel);
             this.Controls.Add(this.CancelButton);
@@ -258,17 +188,12 @@ namespace Unity_Downloader
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unity Downloader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AppDownloadForm_FormClosing);
-            this.ChoosePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button IDMButton;
-        private System.Windows.Forms.Button InAppButton;
-        private System.Windows.Forms.Label DownloadWithText;
-        private System.Windows.Forms.Label ExplainText;
         private System.Windows.Forms.ProgressBar DownloadProgressBar;
         private System.Windows.Forms.Label ProgressLabel;
         private System.Windows.Forms.Label FileNameLabel;
@@ -280,6 +205,5 @@ namespace Unity_Downloader
         private new System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Label PendingLabel;
         private System.Windows.Forms.ListBox LogsList;
-        private System.Windows.Forms.Panel ChoosePanel;
     }
 }

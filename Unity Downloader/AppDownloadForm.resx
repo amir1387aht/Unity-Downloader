@@ -117,17 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExplainText.Text" xml:space="preserve">
-    <value>In App Button :
-   App Itself downloads the part of models and install it automaticlly
-   App downloads chunk of file, so you can continue your download
-   after disconnecting
-
-IDM Button :
-   You can download that part of model with IDM
-   but you should Install it using Install "Locate And Install" Button In Main Form,
-   This Way can be Hard and Unbearable when Model have too many Submodels</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

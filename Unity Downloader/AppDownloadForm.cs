@@ -32,7 +32,7 @@ namespace Unity_Downloader
 
         private FileStream downloadFileStream;
 
-        private string tempDownloadDirectoryName = "unity_downloader";
+        private string tempDownloadPath = "";
 
         private const int timeToUpdateUI = 170, timeToSaveProgress = 5000; // MiliSeconds
 
@@ -45,7 +45,9 @@ namespace Unity_Downloader
             LastForm = lastForm;
             CurrentModule = module;
 
-            tempDownloadDirectoryName = Path.Combine(Path.GetTempPath(), tempDownloadDirectoryName);
+            tempDownloadPath = Path.Combine(Path.GetTempPath(), "unity_downloader", MainForm.SelectedEditor);
+
+            if (!Directory.Exists(tempDownloadPath)) Directory.CreateDirectory(tempDownloadPath);
 
             InitializeComponent();
 
@@ -84,7 +86,6 @@ namespace Unity_Downloader
             downloader.DownloadFileCompleted += OnDownloadFileCompleted;
 
             SetActionButtonType(ActionButtonEnum.Pause);
-            SetChoosePanelVisibility(true);
 
             ActionButton.Enabled = false;
             DownloadProgressBar.Value = 0;
@@ -95,9 +96,12 @@ namespace Unity_Downloader
             TimeLeftLabel.Text = "Time Left : Calculating...";
 
             ShowPendingText(CurrentModule.SubModules);
-            ChangeFormSizeToMinimum();
 
             InitializeProgressBars();
+
+            SetupForm();
+
+            StartDownload();
         }
 
         private void InitializeProgressBars()
@@ -106,7 +110,7 @@ namespace Unity_Downloader
             {
                 progressBars[i] = new CustomProgressBar
                 {
-                    Location = new Point((i * 52) + 81, 15),
+                    Location = new Point((i * 52) + 7, 15),
                     Size = new Size(55, 15),
                     ForeColor = Color.Blue,
                     Anchor = AnchorStyles.Top
@@ -129,9 +133,9 @@ namespace Unity_Downloader
             try
             {
                 // Set file paths
-                CurrentFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}");
-                ProgressFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.json.tmp");
-                LogsFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.log");
+                CurrentFilePath = Path.Combine(tempDownloadPath, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}");
+                ProgressFilePath = Path.Combine(tempDownloadPath, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.json.tmp");
+                LogsFilePath = Path.Combine(tempDownloadPath, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.log");
 
                 // Show Logs Path
                 AddLog($"Logs file can be found in \"{LogsFilePath}\"");
@@ -220,17 +224,6 @@ namespace Unity_Downloader
         {
             if (InvokeRequired) Invoke(action);
             else action();
-        }
-
-        private void IDMButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void InAppButton_Click(object sender, EventArgs e)
-        {
-            ClearChooseAction();
-            StartDownload();
         }
 
         private void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -389,17 +382,14 @@ namespace Unity_Downloader
                 PendingLabel.Text = "Pending : " + string.Join(", ", subModules.Select(x => x.Name));
         }
 
-        private void ClearChooseAction()
+        private void SetupForm()
         {
             ChangeFormSizeToMaximum();
             SetFormLocationCenterOfParent();
-            SetChoosePanelVisibility(false);
         }
 
-        private void ChangeFormSizeToMinimum() => Size = new Size(LastForm.Width, 380);
         private void ChangeFormSizeToMaximum() => Size = new Size(LastForm.Width, LastForm.Height - 1);
         private void SetFormLocationCenterOfParent() => Location = new Point(LastForm.Width / 2 - LastForm.Width / 2 + LastForm.Location.X, LastForm.Height / 2 - LastForm.Height / 2 + LastForm.Location.Y);
-        private void SetChoosePanelVisibility(bool v) => ChoosePanel.Visible = v;
 
         private void ActionButton_Click(object sender, EventArgs e)
         {

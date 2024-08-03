@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using static Unity_Downloader.AppDownloadForm;
 
 namespace Unity_Downloader
 {
@@ -18,7 +17,7 @@ namespace Unity_Downloader
 
         public static string[] AllEditors;
 
-        private static string SelectedEditor;
+        public static string SelectedEditor;
         private static string SelectedItemToDownload;
 
         public static List<UnityReleaseModule> AllReleaseModules;
