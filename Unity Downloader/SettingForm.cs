@@ -155,6 +155,11 @@ namespace Unity_Downloader
                 Application.Exit();
             }
         }
+
+        private void GithubPageButton_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/amir1387aht/Unity-Downloader");
+        }
     }
 }
 

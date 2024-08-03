@@ -63,6 +63,16 @@ namespace Unity_Downloader.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_github_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-github-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap settings_490x512 {
             get {
                 object obj = ResourceManager.GetObject("settings.490x512", resourceCulture);

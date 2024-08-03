@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
-            this.HeaderImg = new System.Windows.Forms.PictureBox();
             this.HeaderLabel = new System.Windows.Forms.Label();
             this.DNSLabel = new System.Windows.Forms.Label();
             this.DNS_PrefrredServer = new System.Windows.Forms.TextBox();
@@ -49,22 +48,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).BeginInit();
+            this.GithubPageButton = new System.Windows.Forms.PictureBox();
+            this.HeaderImg = new System.Windows.Forms.PictureBox();
             this.DNSPanel.SuspendLayout();
             this.Proxy_Panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GithubPageButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).BeginInit();
             this.SuspendLayout();
-            // 
-            // HeaderImg
-            // 
-            this.HeaderImg.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.HeaderImg.BackColor = System.Drawing.Color.Transparent;
-            this.HeaderImg.Image = global::Unity_Downloader.Properties.Resources.settings_490x512;
-            this.HeaderImg.Location = new System.Drawing.Point(191, 12);
-            this.HeaderImg.Name = "HeaderImg";
-            this.HeaderImg.Size = new System.Drawing.Size(45, 46);
-            this.HeaderImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.HeaderImg.TabIndex = 3;
-            this.HeaderImg.TabStop = false;
             // 
             // HeaderLabel
             // 
@@ -275,11 +265,37 @@
             this.label3.Text = "Copyright ©\r\nBy Amir1387aht\r\nTG : @Do3p3iri";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // GithubPageButton
+            // 
+            this.GithubPageButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.GithubPageButton.BackColor = System.Drawing.Color.Transparent;
+            this.GithubPageButton.Image = global::Unity_Downloader.Properties.Resources.icons8_github_96;
+            this.GithubPageButton.Location = new System.Drawing.Point(535, 512);
+            this.GithubPageButton.Name = "GithubPageButton";
+            this.GithubPageButton.Size = new System.Drawing.Size(37, 37);
+            this.GithubPageButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.GithubPageButton.TabIndex = 18;
+            this.GithubPageButton.TabStop = false;
+            this.GithubPageButton.Click += new System.EventHandler(this.GithubPageButton_Click);
+            // 
+            // HeaderImg
+            // 
+            this.HeaderImg.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.HeaderImg.BackColor = System.Drawing.Color.Transparent;
+            this.HeaderImg.Image = global::Unity_Downloader.Properties.Resources.settings_490x512;
+            this.HeaderImg.Location = new System.Drawing.Point(191, 12);
+            this.HeaderImg.Name = "HeaderImg";
+            this.HeaderImg.Size = new System.Drawing.Size(45, 46);
+            this.HeaderImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.HeaderImg.TabIndex = 3;
+            this.HeaderImg.TabStop = false;
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.GithubPageButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -297,11 +313,12 @@
             this.Name = "SettingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Setting";
-            ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).EndInit();
             this.DNSPanel.ResumeLayout(false);
             this.DNSPanel.PerformLayout();
             this.Proxy_Panel.ResumeLayout(false);
             this.Proxy_Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GithubPageButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,5 +345,6 @@
         private System.Windows.Forms.CheckBox Proxy_BypassCheckBox;
         private System.Windows.Forms.Label BypassProxyOnLocalLabel;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox GithubPageButton;
     }
 }
