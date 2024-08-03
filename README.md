@@ -19,11 +19,12 @@ Unity Downloader is a C# Windows Forms application designed to simplify and enha
 
 Main Screen
 
+
 ![Download Screen](screenshots/download_screen.png)
 
 Download Screen
 
-## Installation
+## Installation For Debugging
 
 1. **Clone the repository:**
 
@@ -83,4 +84,4 @@ Unity Downloader is an independent project and is not affiliated with or endorse
 
 ## Contact
 
-For any questions or issues, please open an issue on GitHub or contact the maintainer at [amir1387aht@gmail.com] or on telegram at [@Do3p3iri](http://t.me/Do3p3iri).
+For any questions or issues, please open an issue on GitHub or contact the maintainer at amir1387aht@gmail.com or on telegram at [@Do3p3iri](http://t.me/Do3p3iri).
