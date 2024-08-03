@@ -16,9 +16,11 @@ Unity Downloader is a C# Windows Forms application designed to simplify and enha
 ## Screenshots
 
 ![Main Screen](screenshots/main_screen.png)
+
 Main Screen
 
 ![Download Screen](screenshots/download_screen.png)
+
 Download Screen
 
 ## Installation
