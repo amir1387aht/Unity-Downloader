@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.HeaderLabel = new System.Windows.Forms.Label();
-            this.HeaderImg = new System.Windows.Forms.PictureBox();
             this.EditorVersionLbl = new System.Windows.Forms.Label();
             this.EditorsListSelect = new System.Windows.Forms.DomainUpDown();
             this.AvailabelThingsToDownload = new System.Windows.Forms.Label();
@@ -38,6 +37,8 @@
             this.DownloadButton = new System.Windows.Forms.Button();
             this.LocateButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.SettingButton = new System.Windows.Forms.Button();
+            this.HeaderImg = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,21 +48,9 @@
             this.HeaderLabel.Font = new System.Drawing.Font("Yu Gothic UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HeaderLabel.Location = new System.Drawing.Point(230, 21);
             this.HeaderLabel.Name = "HeaderLabel";
-            this.HeaderLabel.Size = new System.Drawing.Size(191, 32);
+            this.HeaderLabel.Size = new System.Drawing.Size(220, 32);
             this.HeaderLabel.TabIndex = 0;
             this.HeaderLabel.Text = "Unity Downloader";
-            // 
-            // HeaderImg
-            // 
-            this.HeaderImg.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.HeaderImg.BackColor = System.Drawing.Color.Transparent;
-            this.HeaderImg.Image = global::Unity_Downloader.Properties.Resources.unity;
-            this.HeaderImg.Location = new System.Drawing.Point(176, 12);
-            this.HeaderImg.Name = "HeaderImg";
-            this.HeaderImg.Size = new System.Drawing.Size(45, 50);
-            this.HeaderImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.HeaderImg.TabIndex = 1;
-            this.HeaderImg.TabStop = false;
             // 
             // EditorVersionLbl
             // 
@@ -79,7 +68,7 @@
             this.EditorsListSelect.Font = new System.Drawing.Font("Yu Gothic UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EditorsListSelect.Location = new System.Drawing.Point(278, 94);
             this.EditorsListSelect.Name = "EditorsListSelect";
-            this.EditorsListSelect.Size = new System.Drawing.Size(143, 29);
+            this.EditorsListSelect.Size = new System.Drawing.Size(143, 25);
             this.EditorsListSelect.TabIndex = 4;
             this.EditorsListSelect.Text = "Editors";
             this.EditorsListSelect.SelectedItemChanged += new System.EventHandler(this.EditorsListSelect_SelectedItemChanged);
@@ -92,7 +81,7 @@
             this.AvailabelThingsToDownload.Name = "AvailabelThingsToDownload";
             this.AvailabelThingsToDownload.Size = new System.Drawing.Size(194, 19);
             this.AvailabelThingsToDownload.TabIndex = 5;
-            this.AvailabelThingsToDownload.Text = "Available Things To Download : ";
+            this.AvailabelThingsToDownload.Text = "Available Items To Download : ";
             // 
             // ItemsToDownload
             // 
@@ -100,7 +89,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ItemsToDownload.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ItemsToDownload.FormattingEnabled = true;
-            this.ItemsToDownload.ItemHeight = 25;
+            this.ItemsToDownload.ItemHeight = 20;
             this.ItemsToDownload.Location = new System.Drawing.Point(35, 163);
             this.ItemsToDownload.Name = "ItemsToDownload";
             this.ItemsToDownload.Size = new System.Drawing.Size(515, 304);
@@ -137,11 +126,37 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // SettingButton
+            // 
+            this.SettingButton.BackgroundImage = global::Unity_Downloader.Properties.Resources.settings_490x512;
+            this.SettingButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SettingButton.FlatAppearance.BorderSize = 0;
+            this.SettingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SettingButton.Location = new System.Drawing.Point(12, 12);
+            this.SettingButton.Name = "SettingButton";
+            this.SettingButton.Size = new System.Drawing.Size(35, 36);
+            this.SettingButton.TabIndex = 9;
+            this.SettingButton.UseVisualStyleBackColor = true;
+            this.SettingButton.Click += new System.EventHandler(this.SettingButton_Click);
+            // 
+            // HeaderImg
+            // 
+            this.HeaderImg.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.HeaderImg.BackColor = System.Drawing.Color.Transparent;
+            this.HeaderImg.Image = global::Unity_Downloader.Properties.Resources.unity;
+            this.HeaderImg.Location = new System.Drawing.Point(176, 12);
+            this.HeaderImg.Name = "HeaderImg";
+            this.HeaderImg.Size = new System.Drawing.Size(45, 50);
+            this.HeaderImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.HeaderImg.TabIndex = 1;
+            this.HeaderImg.TabStop = false;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 553);
+            this.ClientSize = new System.Drawing.Size(584, 561);
+            this.Controls.Add(this.SettingButton);
             this.Controls.Add(this.LocateButton);
             this.Controls.Add(this.DownloadButton);
             this.Controls.Add(this.ItemsToDownload);
@@ -156,7 +171,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Unity Downloader";
-            this.Load += new System.EventHandler(this.DownloadForm_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.HeaderImg)).EndInit();
             this.ResumeLayout(false);
 
@@ -173,6 +188,7 @@
         private System.Windows.Forms.Button DownloadButton;
         private System.Windows.Forms.Button LocateButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button SettingButton;
     }
 }
 

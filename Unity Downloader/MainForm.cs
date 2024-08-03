@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Windows.Forms;
+using static Unity_Downloader.AppDownloadForm;
 
 namespace Unity_Downloader
 {
@@ -13,7 +13,8 @@ namespace Unity_Downloader
         private static string UnityHubDataPath = "C:\\Users\\{0}\\AppData\\Roaming\\UnityHub";
         private static string UnityHubEditorPath = "{0}\\secondaryInstallPath.json";
         private static string UnityEditorsPath = "";
-        private static string EditorModulesPath = "{0}\\modules.json";
+        private static string EditorModulesDefaultePath = "{0}\\modules.json";
+        private static string EditorModulesPath = EditorModulesDefaultePath;
 
         public static string[] AllEditors;
 
@@ -32,8 +33,14 @@ namespace Unity_Downloader
             InitializeComponent();
         }
 
-        private void DownloadForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
+            if (!Utilities.IsAdministrator())
+            {
+                MessageBox.Show($"Please Run App as Administrator", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+
             UnityHubDataPath = string.Format(UnityHubDataPath, Environment.UserName);
 
             if (!Directory.Exists(UnityHubDataPath))
@@ -69,12 +76,34 @@ namespace Unity_Downloader
         private void EditorsListSelect_SelectedItemChanged(object sender, EventArgs e)
         {
             SelectedEditor = EditorsListSelect.SelectedItem as string;
+
+            EditorModulesPath = EditorModulesDefaultePath;
+
             EditorModulesPath = string.Format(EditorModulesPath, AllEditors[EditorsListSelect.SelectedIndex]);
+
             LoadAvailableItems();
         }
 
         private void LoadAvailableItems()
         {
+            ItemsToDownload.Items.Clear();
+
+            if(!File.Exists(EditorModulesPath))
+            {
+                AllEditors = AllEditors.Where(element => element != SelectedEditor).ToArray();
+                EditorsListSelect.Items.Remove(SelectedEditor);
+
+                if (EditorsListSelect.Items.Count > 0)
+                    EditorsListSelect.SelectedIndex = 0;
+                else
+                {
+                    MessageBox.Show($"It Seems You Dont Installed Any Unity Editor, Install One And try Again.\n\nError : No Valid Editor Folder With modules.json On \"{UnityEditorsPath}\" Found.", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+
+                return;
+            }
+
             string ModulesRawFile = File.ReadAllText(EditorModulesPath);
 
             AllReleaseModules = JsonConvert.DeserializeObject<List<UnityReleaseModule>>(ModulesRawFile);
@@ -132,129 +161,25 @@ namespace Unity_Downloader
                     return;
                 }
 
-                LocateItem(fd.FileName, GetCurrentModule(), null);
+                Utilities.LocateItem(fd.FileName, GetCurrentModule(), OnInstallFinish);
             }
         }
 
-        public static void LocateItem(string sourceFilePath, UnityReleaseModule selectedModule, Action<Exception> OnFinish)
+        private void OnInstallFinish(Exception e)
         {
-            try
+            if (e != null)
             {
-                if (selectedModule.ExtractedPathRename != null)
-                {
-                    selectedModule.ExtractedPathRename.From = AppendUnityPath(selectedModule.ExtractedPathRename.From);
-                    selectedModule.ExtractedPathRename.To = AppendUnityPath(selectedModule.ExtractedPathRename.To);
-
-                    HandleExtractedPathRename(sourceFilePath, selectedModule.ExtractedPathRename);
-
-                    if(OnFinish != null)
-                        OnFinish(null);
-                }
-                else if (selectedModule.Destination != null)
-                {
-                    selectedModule.Destination = AppendUnityPath(selectedModule.Destination);
-
-                    MoveFileToDestination(sourceFilePath, selectedModule.Destination);
-
-                    if (OnFinish != null)
-                        OnFinish(null);
-                }
-                else
-                {
-                    MessageBox.Show($"Not Found Valid Destination for {selectedModule.Name}.\n\nError : Destination and ExtractedPathRename Are Empty.", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    if (OnFinish != null)
-                        OnFinish(new Exception("Not Found Valid Destination"));
-                }
-            }
-            catch(Exception ex)
-            {
-                if (OnFinish != null)
-                    OnFinish(ex);
-            }
-        }
-
-        private static void HandleExtractedPathRename(string sourceFilePath, ExtractedPathRename extractedPathRename)
-        {
-            if(!Directory.Exists(extractedPathRename.To))
-                Directory.CreateDirectory(extractedPathRename.To);
-
-            string tempExtractPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(sourceFilePath));
-
-            if (Directory.Exists(tempExtractPath)) Directory.Delete(tempExtractPath, true);
-
-            if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
-                ZipFile.ExtractToDirectory(sourceFilePath, tempExtractPath);
-            else
-            {
-                string destinationPath = Path.Combine(extractedPathRename.To, Path.GetFileName(sourceFilePath));
-
-                File.Move(sourceFilePath, destinationPath);
-
-                if(Path.GetExtension(destinationPath) == ".exe")
-                    Process.Start(destinationPath);
-
-                MessageBox.Show("Installed Module Successfully!", "System", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MessageBox.Show($"An error was encountered during Installing, Error Message: {e.Message}, Source: {e.Source}, StackTrace:{e.StackTrace}", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string fromLastDirectory = Path.GetFileName(extractedPathRename.From.TrimEnd(Path.DirectorySeparatorChar));
-            string[] extractedDirectories = Directory.GetDirectories(tempExtractPath);
-
-            if (extractedDirectories.Length == 1 && Path.GetFileName(extractedDirectories[0]) == fromLastDirectory)
-            {
-                // Ignore the first directory
-                string[] files = Directory.GetFiles(extractedDirectories[0], "*", SearchOption.AllDirectories);
-
-                foreach (string file in files)
-                {
-                    string relativePath = file.Substring(extractedDirectories[0].Length + 1);
-                    string destinationPath = Path.Combine(extractedPathRename.To, relativePath);
-
-                    string dirName = Path.GetDirectoryName(destinationPath);
-
-                    if(!Directory.Exists(dirName))
-                        Directory.CreateDirectory(dirName);
-
-                    if (!File.Exists(destinationPath))
-                        File.Move(file, destinationPath);
-                }
-            }
-            else
-            {
-                // Move the entire extracted content
-                Directory.Move(tempExtractPath, extractedPathRename.To);
-            }
-
-            // Clean up temporary extraction directory
-            Directory.Delete(tempExtractPath, true);
-
-            MessageBox.Show("Installed Module Successfully!", "System", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Installed Module Successfully!", "System Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private static void MoveFileToDestination(string sourceFilePath, string destinationPath)
+        private void SettingButton_Click(object sender, EventArgs e)
         {
-            if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
-            {
-                string tempExtractPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(sourceFilePath));
-                ZipFile.ExtractToDirectory(sourceFilePath, tempExtractPath);
-                Directory.Move(tempExtractPath, destinationPath);
-            }
-            else
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
-
-                destinationPath = Path.Combine(destinationPath, Path.GetFileName(sourceFilePath));
-
-                if(!File.Exists(destinationPath))
-                    File.Copy(sourceFilePath, destinationPath);
-
-                if (Path.GetExtension(destinationPath) == ".exe")
-                    Process.Start(destinationPath);
-            }
-
-            MessageBox.Show("Installed Module Successfully!", "System", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var SettingForm = new SettingForm();
+            SettingForm.ShowDialog();
         }
     }
 

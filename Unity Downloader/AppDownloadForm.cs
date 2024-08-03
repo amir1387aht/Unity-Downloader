@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Unity_Downloader
@@ -16,65 +18,207 @@ namespace Unity_Downloader
         private UnityReleaseModule CurrentModule;
 
         private string CurrentFilePath = "";
+        private string ProgressFilePath = "";
+        private string LogsFilePath = "";
 
-        DownloadService downloader = new DownloadService(new DownloadConfiguration()
-        {
-            ChunkCount = 8,
-            MaxTryAgainOnFailover = 5,
-            MaximumMemoryBufferBytes = 1024 * 1024 * 50,
-            ParallelDownload = true,
-            ParallelCount = 4,
-            Timeout = 5000,
-        });
+        private DownloadService downloader;
 
-        public enum ActionButtonEnum
-        { 
-            Pause,
-            Resume,
-            Retry
-        }
+        private DateTime lastFileDataUpdate = DateTime.MinValue;
+        private DateTime lastChunkDataUpdate = DateTime.MinValue;
+        private DateTime lastSave = DateTime.MinValue;
 
+        public enum ActionButtonEnum { Pause, Resume, Retry }
         public ActionButtonEnum currentAction;
+
+        private FileStream downloadFileStream;
+
+        private string tempDownloadDirectoryName = "unity_downloader";
+
+        private const int timeToUpdateUI = 170, timeToSaveProgress = 5000; // MiliSeconds
+
+        private CustomProgressBar[] progressBars = new CustomProgressBar[8];
+
+        private DownloadPackage DownloadProgress;
 
         public AppDownloadForm(Form lastForm, UnityReleaseModule module)
         {
             LastForm = lastForm;
             CurrentModule = module;
 
+            tempDownloadDirectoryName = Path.Combine(Path.GetTempPath(), tempDownloadDirectoryName);
+
             InitializeComponent();
-            ChangeFormSizeToMinimum();
+
+            if(!SettingForm.IsSettingLoaded)
+            {
+                SettingForm.InitSettingPath();
+                SettingForm.LoadSetting();
+                SettingForm.ApplyDNS();
+            }
+
+            var downloadConfiguration = new DownloadConfiguration()
+            {
+                ChunkCount = progressBars.Length,
+                MaxTryAgainOnFailover = 5,
+                MaximumMemoryBufferBytes = 1024 * 1024 * 50,
+                ParallelDownload = true,
+                ParallelCount = 4,
+                Timeout = 5000,
+            };
+
+            if (SettingForm.settingData.ProxyEnabled)
+            {
+                downloadConfiguration.RequestConfiguration = new RequestConfiguration();
+                downloadConfiguration.RequestConfiguration.Proxy = new System.Net.WebProxy()
+                {
+                    Address = new Uri(SettingForm.settingData.ProxyPacFilePath),
+                    BypassProxyOnLocal = SettingForm.settingData.BypassProxyOnLocal
+                };
+            }
+
+            downloader = new DownloadService(downloadConfiguration);
 
             downloader.DownloadStarted += OnDownloadStarted;
-
             downloader.ChunkDownloadProgressChanged += OnChunkDownloadProgressChanged;
-
             downloader.DownloadProgressChanged += OnDownloadProgressChanged;
-
             downloader.DownloadFileCompleted += OnDownloadFileCompleted;
 
             SetActionButtonType(ActionButtonEnum.Pause);
-
             SetChoosePanelVisibility(true);
 
             ActionButton.Enabled = false;
+            DownloadProgressBar.Value = 0;
+            FileNameLabel.Text = "Current File : " + CurrentModule.Name;
+            StatusLabel.Text = "Status : Downloading...";
+            DownloadedSpaceLabel.Text = "Downloaded : 0 MB (%0)";
+            TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
+            TimeLeftLabel.Text = "Time Left : Calculating...";
 
-            UpdateUI(() =>
+            ShowPendingText(CurrentModule.SubModules);
+            ChangeFormSizeToMinimum();
+
+            InitializeProgressBars();
+        }
+
+        private void InitializeProgressBars()
+        {
+            for (int i = 0; i < progressBars.Length; i++)
             {
-                DownloadProgressBar.Value = 0;
-                FileNameLabel.Text = "Current File : " + CurrentModule.Name;
-                StatusLabel.Text = "Status : Downloading...";
-                DownloadedSpaceLabel.Text = "Downloaded : 0 MB (%0)";
-                TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
-                TimeLeftLabel.Text = "Time Left : Calculating...";
+                progressBars[i] = new CustomProgressBar
+                {
+                    Location = new Point((i * 52) + 81, 15),
+                    Size = new Size(55, 15),
+                    ForeColor = Color.Blue,
+                    Anchor = AnchorStyles.Top
+                };
 
-                ShowPendingText(CurrentModule.SubModules);
+                Controls.Add(progressBars[i]); // Add progress bar to the form
+            }
+        }
+
+        public void UpdateProgressBar(int chunkIndex, int value)
+        {
+            if (chunkIndex >= 0 && chunkIndex < progressBars.Length)
+            {
+                progressBars[chunkIndex].Value = value;
+            }
+        }
+
+        private async void StartDownload()
+        {
+            try
+            {
+                // Set file paths
+                CurrentFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}");
+                ProgressFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.json.tmp");
+                LogsFilePath = Path.Combine(tempDownloadDirectoryName, $"{CurrentModule.Name}.{CurrentModule.Type.ToLower()}.log");
+
+                // Show Logs Path
+                AddLog($"Logs file can be found in \"{LogsFilePath}\"");
+
+                // Delete old logs
+                File.WriteAllText(LogsFilePath, "");
+
+                // Log the download start
+                AddLog($"Downloading File: {CurrentModule.Url}");
+
+                // Check if a progress file exists
+                if (File.Exists(ProgressFilePath))
+                {
+                    // Prompt the user to continue from the saved progress
+                    DialogResult result = MessageBox.Show(
+                        $"A save file was found for {CurrentModule.Name}. Do you want to continue from the saved file?",
+                        "System Confirmation",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information
+                    );
+
+                    // Handle the user's choice
+                    if (result == DialogResult.Yes)
+                    {
+                        downloadFileStream = new FileStream(CurrentFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                        DownloadProgress = LoadProgress();
+
+                        ResetChunkProgressBars();
+
+                        await downloader.DownloadFileTaskAsync(DownloadProgress, CurrentModule.Url, downloadFileStream);
+                    }
+                    else
+                    {
+                        await downloader.DownloadFileTaskAsync(CurrentModule.Url, CurrentFilePath);
+                    }
+                }
+                else
+                {
+                    await downloader.DownloadFileTaskAsync(CurrentModule.Url, CurrentFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log any exceptions that occur during the download process
+                AddLog($"An error occurred while starting the download: {ex.Message}");
+                MessageBox.Show($"An error occurred: {ex.Message}, Close app and try again", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ResetChunkProgressBars()
+        {
+            if (DownloadProgress == null || DownloadProgress.Chunks == null || DownloadProgress.Chunks.Length == 0) return;
+
+            for (int i = 0; i < progressBars.Length; i++)
+            {
+                UpdateProgressBar(i, DownloadProgress.Chunks[i].IsDownloadCompleted() ? 100 : 0);
+            }
+        }
+
+
+        private void CheckForSaveProgress()
+        {
+            InvokeFunction(() =>
+            {
+                if ((DateTime.Now - lastSave).TotalMilliseconds < timeToSaveProgress) return;
+
+                lastSave = DateTime.Now;
+
+                SaveProgress();
             });
         }
 
-        private void UpdateUI(Action action)
+        private void SaveProgress()
         {
-            if (InvokeRequired)
-                Invoke(action);
+            var progress = downloader.Package;
+            var progressJson = Newtonsoft.Json.JsonConvert.SerializeObject(progress);
+
+            File.WriteAllText(ProgressFilePath, progressJson);
+        }
+
+        private DownloadPackage LoadProgress() =>
+            Newtonsoft.Json.JsonConvert.DeserializeObject<DownloadPackage>(File.ReadAllText(ProgressFilePath));
+
+        private void InvokeFunction(Action action)
+        {
+            if (InvokeRequired) Invoke(action);
             else action();
         }
 
@@ -86,61 +230,58 @@ namespace Unity_Downloader
         private void InAppButton_Click(object sender, EventArgs e)
         {
             ClearChooseAction();
-
             StartDownload();
-        }
-
-        private async void StartDownload()
-        {
-            string path = "";
-
-            if (CurrentModule.Destination != null)
-                path = CurrentModule.Destination;
-            else if (CurrentModule.ExtractedPathRename != null && CurrentModule.ExtractedPathRename.From != null)
-                path = CurrentModule.ExtractedPathRename.From;
-
-            CurrentFilePath = path;
-            AddLog(CurrentModule.Url);
-            await downloader.DownloadFileTaskAsync(CurrentModule.Url, MainForm.AppendUnityPath(path));
         }
 
         private void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            UpdateUI(() => {
-                ActionButton.Enabled = true;
-            });
+            SaveProgress();
+
+            InvokeFunction(() => { ActionButton.Enabled = true; });
 
             if (e.Cancelled)
             {
-                UpdateUI(() => {
+                InvokeFunction(() =>
+                {
                     StatusLabel.Text = "Status : Cancelled";
                     SetActionButtonType(ActionButtonEnum.Retry);
                     AddLog("Download Cancelled.");
                 });
+                downloadFileStream?.Close();
                 return;
             }
 
             if (e.Error != null)
             {
-                UpdateUI(() => {
+                InvokeFunction(() =>
+                {
                     StatusLabel.Text = "Status : An error was encountered during Downloading";
                     SetActionButtonType(ActionButtonEnum.Retry);
                     AddLog($"An error was encountered during Downloading, Error Message: {e.Error.Message}, Source: {e.Error.Source}, StackTrace:{e.Error.StackTrace}");
                 });
+
+                downloadFileStream?.Close();
                 return;
             }
 
-            // TODO: handle wifi disconnect action
-
-            UpdateUI(() => {
+            InvokeFunction(async () =>
+            {
                 StatusLabel.Text = "Status : Installing...";
+
                 AddLog($"Installing {CurrentModule.Name}...");
+
                 ActionButton.Enabled = false;
                 CancelButton.Enabled = false;
+
+                DownloadProgressBar.Value = 100;
+                ProgressLabel.Text = "%100";
+
+                await Task.Delay(300);
+
+                Utilities.LocateItem(CurrentFilePath, CurrentModule, OnInstallComplete);
             });
 
-            // Install Item
-            MainForm.LocateItem(CurrentFilePath, CurrentModule, OnInstallComplete);
+            downloadFileStream?.Close();
         }
 
         private void OnInstallComplete(Exception e)
@@ -156,28 +297,65 @@ namespace Unity_Downloader
                 return;
             }
 
-            // TODO: prepare next item
+            if (CurrentModule.SubModules.Count == 0 && ParentModule == null)
+            {
+                MessageBox.Show("Installed Module Successfully!", "System Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
+                return;
+            }
 
-            // FIXME: delete downloaded item from pending
-            ShowPendingText(CurrentModule.SubModules);
+            // Prepare for next model
+            ref UnityReleaseModule NextModel = ref (ParentModule == null ? ref CurrentModule : ref ParentModule);
 
+            NextModel.SubModules.RemoveAt(0);
+
+            ParentModule ??= CurrentModule;
+            string nextModelName = NextModel.SubModules[0].Name;
+            CurrentModule = MainForm.AllReleaseModules.Find(item => item.Name == nextModelName);
+
+            ShowPendingText(ParentModule.SubModules);
             StartDownload();
         }
 
-        private void OnDownloadProgressChanged(object sender, Downloader.DownloadProgressChangedEventArgs e)
+        private void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            UpdateUI(() =>
+            if ((DateTime.Now - lastFileDataUpdate).TotalMilliseconds < timeToUpdateUI) return;
+
+            lastFileDataUpdate = DateTime.Now;
+
+            InvokeFunction(() =>
             {
                 DownloadProgressBar.Value = (int)e.ProgressPercentage;
                 ProgressLabel.Text = "%" + e.ProgressPercentage.ToString("F2");
-                DownloadedSpaceLabel.Text = $"Downloaded : {GetHumanReadableSize(e.ReceivedBytesSize)} (total: {GetHumanReadableSize(e.TotalBytesToReceive)})";
-                TransferRateLabel.Text = $"Transfer Rate : {GetHumanReadableSize((long)e.AverageBytesPerSecondSpeed)}/Sec";
+                DownloadedSpaceLabel.Text = $"Downloaded : {Utilities.GetHumanReadableFileSize(e.ReceivedBytesSize)} (total: {Utilities.GetHumanReadableFileSize(e.TotalBytesToReceive)})";
+                TransferRateLabel.Text = $"Transfer Rate : {Utilities.GetHumanReadableFileSize((long)e.AverageBytesPerSecondSpeed)}/Sec";
+                TimeLeftLabel.Text = $"Time Left : {GetDownloadTimeLeft(e)}";
             });
+
+            CheckForSaveProgress();
         }
 
-        private void OnChunkDownloadProgressChanged(object sender, Downloader.DownloadProgressChangedEventArgs e)
+        public static string GetDownloadTimeLeft(DownloadProgressChangedEventArgs e)
         {
-            
+            if (e.AverageBytesPerSecondSpeed > 0)
+            {
+                long bytesRemaining = e.TotalBytesToReceive - e.ReceivedBytesSize;
+                TimeSpan timeLeft = TimeSpan.FromSeconds(bytesRemaining / e.AverageBytesPerSecondSpeed);
+                return $"{timeLeft.Hours:D2}:{timeLeft.Minutes:D2}:{timeLeft.Seconds:D2}";
+            }
+            else return "Calculating...";
+        }
+
+        private void OnChunkDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if ((DateTime.Now - lastChunkDataUpdate).TotalMilliseconds < timeToUpdateUI) return;
+
+            lastChunkDataUpdate = DateTime.Now;
+
+            InvokeFunction(() =>
+            {
+                UpdateProgressBar(int.Parse(e.ProgressId), (int)e.ProgressPercentage);
+            });
         }
 
         private void SetActionButtonType(ActionButtonEnum currentAction)
@@ -188,39 +366,27 @@ namespace Unity_Downloader
 
         private void OnDownloadStarted(object sender, DownloadStartedEventArgs e)
         {
-            UpdateUI(() =>
+            InvokeFunction(() =>
             {
                 ActionButton.Enabled = true;
-
                 AddLog($"Downloading File \"{Path.GetFileName(e.FileName)}\" Started.");
-
                 DownloadProgressBar.Value = 0;
                 FileNameLabel.Text = "Current File : " + Path.GetFileName(e.FileName);
                 StatusLabel.Text = "Status : Downloading...";
                 DownloadedSpaceLabel.Text = "Downloaded : 0 MB (%0)";
                 TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
                 TimeLeftLabel.Text = "Time Left : Calculating...";
-
+                ResetChunkProgressBars();
                 ShowPendingText(CurrentModule.SubModules);
             });
         }
 
         private void ShowPendingText(List<SubModule> subModules)
         {
-            PendingLabel.Text = "Pending : ";
+            PendingLabel.Text = "Pending : -";
 
-            if(subModules == null)
-            {
-                PendingLabel.Text += "Nothing";
-                return;
-            }
-
-            for (int i = 0; i < subModules.Count; i++)
-            {
-                if (i == subModules.Count - 1)
-                    PendingLabel.Text += subModules[i];
-                else PendingLabel.Text += subModules[i] + ", ";
-            }
+            if (subModules != null && subModules.Count != 0)
+                PendingLabel.Text = "Pending : " + string.Join(", ", subModules.Select(x => x.Name));
         }
 
         private void ClearChooseAction()
@@ -231,14 +397,8 @@ namespace Unity_Downloader
         }
 
         private void ChangeFormSizeToMinimum() => Size = new Size(LastForm.Width, 380);
-
-        private void ChangeFormSizeToMaximum() => Size = new Size(LastForm.Width, LastForm.Height);
-
-        private void SetFormLocationCenterOfParent() => Location = new Point(
-            LastForm.Width / 2 - LastForm.Width / 2 + LastForm.Location.X,
-            LastForm.Height / 2 - LastForm.Height / 2 + LastForm.Location.Y
-        );
-
+        private void ChangeFormSizeToMaximum() => Size = new Size(LastForm.Width, LastForm.Height - 1);
+        private void SetFormLocationCenterOfParent() => Location = new Point(LastForm.Width / 2 - LastForm.Width / 2 + LastForm.Location.X, LastForm.Height / 2 - LastForm.Height / 2 + LastForm.Location.Y);
         private void SetChoosePanelVisibility(bool v) => ChoosePanel.Visible = v;
 
         private void ActionButton_Click(object sender, EventArgs e)
@@ -248,16 +408,18 @@ namespace Unity_Downloader
                 case ActionButtonEnum.Pause:
                     downloader.Pause();
                     SetActionButtonType(ActionButtonEnum.Resume);
-                    AddLog("Download Pauseded.");
+                    AddLog("Download Paused.");
+                    StatusLabel.Text = "Status : Paused";
                     break;
                 case ActionButtonEnum.Resume:
                     downloader.Resume();
                     SetActionButtonType(ActionButtonEnum.Pause);
-                    AddLog("Download Resumeed.");
+                    AddLog("Download Resumed.");
+                    StatusLabel.Text = "Status : Downloading...";
                     break;
                 case ActionButtonEnum.Retry:
                     SetActionButtonType(ActionButtonEnum.Pause);
-                    AddLog("Retry To Download...");
+                    AddLog("Retrying To Download...");
                     StartDownload();
                     break;
             }
@@ -265,6 +427,8 @@ namespace Unity_Downloader
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
+            SaveProgress();
+
             downloader.CancelAsync();
 
             Close();
@@ -273,16 +437,12 @@ namespace Unity_Downloader
         private void AddLog(string text)
         {
             LogsList.Items.Add(text);
+            File.AppendAllText(LogsFilePath, $"[{DateTime.Now}] {text}\n");
         }
 
-        public static string GetHumanReadableSize(long byteCount)
+        private void AppDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (byteCount < 1024 * 1024) // less than 1 MB
-                return (byteCount / 1024.0).ToString("F2") + " KB";
-            else if (byteCount < 1024 * 1024 * 1024) // less than 1 GB
-                return (byteCount / 1024.0 / 1024.0).ToString("F2") + " MB";
-            else // 1 GB or more
-                return (byteCount / 1024.0 / 1024.0 / 1024.0).ToString("F2") + " GB";
+            downloadFileStream?.Close();
         }
     }
 }

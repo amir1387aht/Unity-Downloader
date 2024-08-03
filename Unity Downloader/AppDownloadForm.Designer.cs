@@ -1,4 +1,7 @@
-﻿namespace Unity_Downloader
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace Unity_Downloader
 {
     partial class AppDownloadForm
     {
@@ -53,10 +56,10 @@
             this.ExplainText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ExplainText.Font = new System.Drawing.Font("Yu Gothic UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExplainText.Location = new System.Drawing.Point(11, 130);
+            this.ExplainText.Location = new System.Drawing.Point(11, 139);
             this.ExplainText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ExplainText.Name = "ExplainText";
-            this.ExplainText.Size = new System.Drawing.Size(530, 290);
+            this.ExplainText.Size = new System.Drawing.Size(555, 290);
             this.ExplainText.TabIndex = 11;
             this.ExplainText.Text = resources.GetString("ExplainText.Text");
             // 
@@ -64,7 +67,7 @@
             // 
             this.IDMButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.IDMButton.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IDMButton.Location = new System.Drawing.Point(348, 66);
+            this.IDMButton.Location = new System.Drawing.Point(362, 75);
             this.IDMButton.Margin = new System.Windows.Forms.Padding(4);
             this.IDMButton.Name = "IDMButton";
             this.IDMButton.Size = new System.Drawing.Size(193, 47);
@@ -77,7 +80,7 @@
             // 
             this.InAppButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.InAppButton.Font = new System.Drawing.Font("Yu Gothic UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InAppButton.Location = new System.Drawing.Point(15, 66);
+            this.InAppButton.Location = new System.Drawing.Point(27, 75);
             this.InAppButton.Margin = new System.Windows.Forms.Padding(4);
             this.InAppButton.Name = "InAppButton";
             this.InAppButton.Size = new System.Drawing.Size(193, 47);
@@ -90,7 +93,7 @@
             // 
             this.DownloadWithText.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.DownloadWithText.Font = new System.Drawing.Font("Yu Gothic UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownloadWithText.Location = new System.Drawing.Point(154, 3);
+            this.DownloadWithText.Location = new System.Drawing.Point(167, 11);
             this.DownloadWithText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.DownloadWithText.Name = "DownloadWithText";
             this.DownloadWithText.Size = new System.Drawing.Size(255, 39);
@@ -100,9 +103,10 @@
             // DownloadProgressBar
             // 
             this.DownloadProgressBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DownloadProgressBar.Location = new System.Drawing.Point(12, 12);
+            this.DownloadProgressBar.Location = new System.Drawing.Point(11, 46);
+            this.DownloadProgressBar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DownloadProgressBar.Name = "DownloadProgressBar";
-            this.DownloadProgressBar.Size = new System.Drawing.Size(558, 39);
+            this.DownloadProgressBar.Size = new System.Drawing.Size(557, 42);
             this.DownloadProgressBar.TabIndex = 11;
             // 
             // ProgressLabel
@@ -110,7 +114,7 @@
             this.ProgressLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.ProgressLabel.AutoSize = true;
             this.ProgressLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProgressLabel.Location = new System.Drawing.Point(260, 54);
+            this.ProgressLabel.Location = new System.Drawing.Point(258, 90);
             this.ProgressLabel.Margin = new System.Windows.Forms.Padding(0);
             this.ProgressLabel.Name = "ProgressLabel";
             this.ProgressLabel.Size = new System.Drawing.Size(33, 23);
@@ -119,56 +123,51 @@
             // 
             // FileNameLabel
             // 
-            this.FileNameLabel.AutoSize = true;
             this.FileNameLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileNameLabel.Location = new System.Drawing.Point(23, 102);
+            this.FileNameLabel.Location = new System.Drawing.Point(23, 134);
             this.FileNameLabel.Margin = new System.Windows.Forms.Padding(0);
             this.FileNameLabel.Name = "FileNameLabel";
-            this.FileNameLabel.Size = new System.Drawing.Size(112, 23);
+            this.FileNameLabel.Size = new System.Drawing.Size(545, 23);
             this.FileNameLabel.TabIndex = 13;
             this.FileNameLabel.Text = "Current File : ";
             // 
             // StatusLabel
             // 
-            this.StatusLabel.AutoSize = true;
             this.StatusLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StatusLabel.Location = new System.Drawing.Point(23, 142);
+            this.StatusLabel.Location = new System.Drawing.Point(23, 175);
             this.StatusLabel.Margin = new System.Windows.Forms.Padding(0);
             this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(71, 23);
+            this.StatusLabel.Size = new System.Drawing.Size(545, 23);
             this.StatusLabel.TabIndex = 14;
             this.StatusLabel.Text = "Status : ";
             // 
             // DownloadedSpaceLabel
             // 
-            this.DownloadedSpaceLabel.AutoSize = true;
             this.DownloadedSpaceLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DownloadedSpaceLabel.Location = new System.Drawing.Point(23, 182);
+            this.DownloadedSpaceLabel.Location = new System.Drawing.Point(23, 214);
             this.DownloadedSpaceLabel.Margin = new System.Windows.Forms.Padding(0);
             this.DownloadedSpaceLabel.Name = "DownloadedSpaceLabel";
-            this.DownloadedSpaceLabel.Size = new System.Drawing.Size(120, 23);
+            this.DownloadedSpaceLabel.Size = new System.Drawing.Size(545, 23);
             this.DownloadedSpaceLabel.TabIndex = 15;
             this.DownloadedSpaceLabel.Text = "Downloaded : ";
             // 
             // TransferRateLabel
             // 
-            this.TransferRateLabel.AutoSize = true;
             this.TransferRateLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TransferRateLabel.Location = new System.Drawing.Point(23, 222);
+            this.TransferRateLabel.Location = new System.Drawing.Point(23, 255);
             this.TransferRateLabel.Margin = new System.Windows.Forms.Padding(0);
             this.TransferRateLabel.Name = "TransferRateLabel";
-            this.TransferRateLabel.Size = new System.Drawing.Size(122, 23);
+            this.TransferRateLabel.Size = new System.Drawing.Size(545, 23);
             this.TransferRateLabel.TabIndex = 16;
             this.TransferRateLabel.Text = "Transfer Rate : ";
             // 
             // TimeLeftLabel
             // 
-            this.TimeLeftLabel.AutoSize = true;
             this.TimeLeftLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLeftLabel.Location = new System.Drawing.Point(23, 262);
+            this.TimeLeftLabel.Location = new System.Drawing.Point(23, 294);
             this.TimeLeftLabel.Margin = new System.Windows.Forms.Padding(0);
             this.TimeLeftLabel.Name = "TimeLeftLabel";
-            this.TimeLeftLabel.Size = new System.Drawing.Size(94, 23);
+            this.TimeLeftLabel.Size = new System.Drawing.Size(545, 23);
             this.TimeLeftLabel.TabIndex = 17;
             this.TimeLeftLabel.Text = "Time Left : ";
             // 
@@ -176,9 +175,10 @@
             // 
             this.ActionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ActionButton.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ActionButton.Location = new System.Drawing.Point(408, 543);
+            this.ActionButton.Location = new System.Drawing.Point(403, 487);
+            this.ActionButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ActionButton.Name = "ActionButton";
-            this.ActionButton.Size = new System.Drawing.Size(145, 45);
+            this.ActionButton.Size = new System.Drawing.Size(145, 46);
             this.ActionButton.TabIndex = 18;
             this.ActionButton.Text = "Pause";
             this.ActionButton.UseVisualStyleBackColor = true;
@@ -188,9 +188,10 @@
             // 
             this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CancelButton.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CancelButton.Location = new System.Drawing.Point(27, 543);
+            this.CancelButton.Location = new System.Drawing.Point(27, 487);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(145, 45);
+            this.CancelButton.Size = new System.Drawing.Size(145, 46);
             this.CancelButton.TabIndex = 19;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -198,12 +199,11 @@
             // 
             // PendingLabel
             // 
-            this.PendingLabel.AutoSize = true;
             this.PendingLabel.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PendingLabel.Location = new System.Drawing.Point(23, 302);
+            this.PendingLabel.Location = new System.Drawing.Point(23, 335);
             this.PendingLabel.Margin = new System.Windows.Forms.Padding(0);
             this.PendingLabel.Name = "PendingLabel";
-            this.PendingLabel.Size = new System.Drawing.Size(87, 23);
+            this.PendingLabel.Size = new System.Drawing.Size(545, 23);
             this.PendingLabel.TabIndex = 20;
             this.PendingLabel.Text = "Pending : ";
             // 
@@ -214,30 +214,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogsList.FormattingEnabled = true;
             this.LogsList.ItemHeight = 16;
-            this.LogsList.Location = new System.Drawing.Point(27, 341);
+            this.LogsList.Location = new System.Drawing.Point(27, 374);
+            this.LogsList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LogsList.Name = "LogsList";
-            this.LogsList.Size = new System.Drawing.Size(526, 148);
+            this.LogsList.Size = new System.Drawing.Size(522, 84);
             this.LogsList.TabIndex = 21;
             // 
             // ChoosePanel
             // 
-            this.ChoosePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.ChoosePanel.Controls.Add(this.ExplainText);
             this.ChoosePanel.Controls.Add(this.IDMButton);
             this.ChoosePanel.Controls.Add(this.DownloadWithText);
             this.ChoosePanel.Controls.Add(this.InAppButton);
-            this.ChoosePanel.Location = new System.Drawing.Point(12, 12);
+            this.ChoosePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ChoosePanel.ForeColor = System.Drawing.Color.Black;
+            this.ChoosePanel.Location = new System.Drawing.Point(0, 0);
+            this.ChoosePanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChoosePanel.Name = "ChoosePanel";
-            this.ChoosePanel.Size = new System.Drawing.Size(558, 587);
+            this.ChoosePanel.Size = new System.Drawing.Size(582, 553);
             this.ChoosePanel.TabIndex = 101;
             // 
             // AppDownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 611);
+            this.ClientSize = new System.Drawing.Size(582, 553);
             this.Controls.Add(this.ChoosePanel);
             this.Controls.Add(this.LogsList);
             this.Controls.Add(this.PendingLabel);
@@ -252,10 +253,11 @@
             this.Controls.Add(this.DownloadProgressBar);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(600, 400);
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "AppDownloadForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unity Downloader";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AppDownloadForm_FormClosing);
             this.ChoosePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -275,7 +277,7 @@
         private System.Windows.Forms.Label TransferRateLabel;
         private System.Windows.Forms.Label TimeLeftLabel;
         private System.Windows.Forms.Button ActionButton;
-        private System.Windows.Forms.Button CancelButton;
+        private new System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Label PendingLabel;
         private System.Windows.Forms.ListBox LogsList;
         private System.Windows.Forms.Panel ChoosePanel;
