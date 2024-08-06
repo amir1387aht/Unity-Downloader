@@ -131,22 +131,12 @@ namespace Unity_Downloader
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(filePath)
             {
-                UseShellExecute = true,
                 Verb = "runas" // Run as administrator
             };
 
             try
             {
-                using (Process process = Process.Start(startInfo))
-                {
-                    process.WaitForExit();
-
-                    if (process.ExitCode != 0)
-                    {
-                        output = $"Running \"{filePath}\" encountered an error. Please try Run It Manually";
-                        return false;
-                    }
-                }
+                Process.Start(startInfo);
             }
             catch (Exception ex)
             {

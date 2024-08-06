@@ -14,8 +14,8 @@ namespace Unity_Downloader
     {
         private Form LastForm = new Form();
 
-        private UnityReleaseModule ParentModule;
         private UnityReleaseModule CurrentModule;
+        private List<UnityReleaseModule> PendingSubModules = new List<UnityReleaseModule>();
 
         private string CurrentFilePath = "";
         private string ProgressFilePath = "";
@@ -42,6 +42,9 @@ namespace Unity_Downloader
         {
             LastForm = lastForm;
             CurrentModule = module;
+
+            if(CurrentModule.SubModules != null && CurrentModule.SubModules.Count != 0)
+                PendingSubModules = FindAllSubModules();
 
             tempDownloadPath = Path.Combine(Path.GetTempPath(), "unity_downloader", MainForm.SelectedEditor);
 
@@ -93,13 +96,45 @@ namespace Unity_Downloader
             TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
             TimeLeftLabel.Text = "Time Left : Calculating...";
 
-            ShowPendingText(CurrentModule.SubModules);
+            ShowPendingText();
 
             InitializeProgressBars();
 
             SetupForm();
 
             StartDownload();
+        }
+
+        public List<UnityReleaseModule> FindAllSubModules()
+        {
+            var matchedSubModules = new List<UnityReleaseModule>();
+
+            var allModules = MainForm.AllReleaseModules;
+            var subModels = CurrentModule.SubModules;
+
+            foreach (var module in subModels)
+            {
+                AddSubModulesRecursively(allModules, matchedSubModules, module);
+            }
+
+            return matchedSubModules;
+        }
+
+        private void AddSubModulesRecursively(List<UnityReleaseModule> allModules, List<UnityReleaseModule> matchedSubModules, SubModule subModule)
+        {
+            var matchedModule = allModules.Find(m => m.Name == subModule.Name);
+            if (matchedModule != null)
+            {
+                matchedSubModules.Add(matchedModule);
+            }
+
+            if (subModule.SubModules != null && subModule.SubModules.Count > 0)
+            {
+                foreach (var nestedSubModule in subModule.SubModules)
+                {
+                    AddSubModulesRecursively(allModules, matchedSubModules, nestedSubModule);
+                }
+            }
         }
 
         private void InitializeProgressBars()
@@ -126,6 +161,8 @@ namespace Unity_Downloader
             }
         }
 
+        private bool isInitialDownload = true;
+
         private async void StartDownload()
         {
             try
@@ -142,7 +179,7 @@ namespace Unity_Downloader
                 LogsFilePath = Path.Combine(tempDownloadPath, $"Log.log");
 
                 // Show Download State
-                AddLog($"-------------------- [{DateTime.Now}] New Download Starting. Name: {CurrentModule.Name}, Url: {CurrentModule.Url}, SubModels: {GetModelSubModels(CurrentModule.SubModules)} --------------------");
+                AddLog($"-------------------- [{DateTime.Now}] New Download Starting. Name: {CurrentModule.Name}, Url: {CurrentModule.Url}, SubModels: {GetModelSubModels()} --------------------", false);
 
                 // Show Logs Path
                 AddLog($"Logs file can be found in \"{LogsFilePath}\"");
@@ -153,17 +190,27 @@ namespace Unity_Downloader
                 // Check if a progress file exists
                 if (File.Exists(ProgressFilePath))
                 {
-                    // Prompt the user to continue from the saved progress
-                    DialogResult result = MessageBox.Show(
+                    // Prompt the user to continue from the saved progress
+                    DialogResult result = isInitialDownload ? MessageBox.Show(
                         $"A save file was found for {CurrentModule.Name}. Do you want to continue from the saved file?",
                         "System Confirmation",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Information
-                    );
+                    ) : DialogResult.Yes;
 
-                    // Handle the user's choice
-                    if (result == DialogResult.Yes)
-                        await downloader.DownloadFileTaskAsync(DownloadProgress = LoadProgress(), CurrentModule.Url);
+                    // Handle the user's choice
+                    if (result == DialogResult.Yes)
+                    {
+                        DownloadProgress = LoadProgress();
+
+                        if (DownloadProgress.IsSaveComplete)
+                        {
+                            AddLog("Found an Exiting Completed Save. Skipping This Item.");
+                            OnInstallComplete(null);
+                        }
+                        else
+                            await downloader.DownloadFileTaskAsync(DownloadProgress, CurrentModule.Url);
+                    }
                     else
                         await downloader.DownloadFileTaskAsync(CurrentModule.Url, CurrentFilePath);
                 }
@@ -181,7 +228,13 @@ namespace Unity_Downloader
 
         private void ResetChunkProgressBars()
         {
-            if (DownloadProgress == null || DownloadProgress.Chunks == null || DownloadProgress.Chunks.Length == 0) return;
+            if (DownloadProgress == null || DownloadProgress.Chunks == null || DownloadProgress.Chunks.Length == 0)
+            {
+                for (int i = 0; i < progressBars.Length; i++)
+                    UpdateProgressBar(i, 0);
+
+                return;
+            }
 
             for (int i = 0; i < progressBars.Length; i++)
                 UpdateProgressBar(i, DownloadProgress.Chunks[i].IsDownloadCompleted() ? 100 : 0);
@@ -267,36 +320,37 @@ namespace Unity_Downloader
 
         private void OnInstallComplete(Exception e)
         {
-            ActionButton.Enabled = true;
-            CancelButton.Enabled = true;
-
-            if (e != null)
+            InvokeFunction(() =>
             {
-                StatusLabel.Text = "An error was encountered during Installing";
-                AddLog($"An error was encountered during Installing, Error Message: {e.Message}, Source: {e.Source}, StackTrace:{e.StackTrace}");
-                MessageBox.Show($"An error was encountered during Installing, Error Message: {e.Message}, Source: {e.Source}, StackTrace:{e.StackTrace}", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SetActionButtonType(ActionButtonEnum.Retry);
-                return;
-            }
+                ActionButton.Enabled = true;
+                CancelButton.Enabled = true;
 
-            if ((CurrentModule.SubModules == null || CurrentModule.SubModules.Count == 0) && ParentModule == null)
-            {
-                MessageBox.Show("Installed Module Successfully!", "System Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
-                return;
-            }
+                if (e != null)
+                {
+                    StatusLabel.Text = "An error was encountered during Installing";
+                    AddLog($"An error was encountered during Installing, Error Message: {e.Message}, Source: {e.Source}, StackTrace:{e.StackTrace}");
+                    MessageBox.Show($"An error was encountered during Installing, Error Message: {e.Message}, Source: {e.Source}, StackTrace:{e.StackTrace}", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SetActionButtonType(ActionButtonEnum.Retry);
+                    return;
+                }
 
-            // Prepare for next model
-            ref UnityReleaseModule NextModel = ref (ParentModule == null ? ref CurrentModule : ref ParentModule);
+                if (PendingSubModules.Count == 0)
+                {
+                    MessageBox.Show("Installed Module Successfully!", "System Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                    return;
+                }
 
-            NextModel.SubModules.RemoveAt(0);
+                var ModuleToDownload = PendingSubModules.First();
+                PendingSubModules.Remove(ModuleToDownload);
+                CurrentModule = ModuleToDownload;
 
-            ParentModule ??= CurrentModule;
-            string nextModelName = NextModel.SubModules[0].Name;
-            CurrentModule = MainForm.AllReleaseModules.Find(item => item.Name == nextModelName);
+                ShowPendingText();
 
-            ShowPendingText(ParentModule.SubModules);
-            StartDownload();
+                isInitialDownload = false;
+
+                StartDownload();
+            });
         }
 
         private void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -359,19 +413,19 @@ namespace Unity_Downloader
                 TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
                 TimeLeftLabel.Text = "Time Left : Calculating...";
                 ResetChunkProgressBars();
-                ShowPendingText(CurrentModule.SubModules);
+                ShowPendingText();
             });
         }
 
-        private void ShowPendingText(List<SubModule> subModules) =>
-            PendingLabel.Text = GetModelSubModels(subModules);
+        private void ShowPendingText() =>
+            PendingLabel.Text = GetModelSubModels();
 
-        private string GetModelSubModels(List<SubModule> subModules)
+        private string GetModelSubModels()
         {
             string result = "Pending : -";
 
-            if (subModules != null && subModules.Count != 0)
-                result = "Pending : " + string.Join(", ", subModules.Select(x => x.Name));
+            if (PendingSubModules.Count != 0)
+                result = "Pending : " + string.Join(", ", PendingSubModules.Select(x => x.Name));
 
             return result;
         }
@@ -418,9 +472,11 @@ namespace Unity_Downloader
             Close();
         }
 
-        private void AddLog(string text)
+        private void AddLog(string text, bool showInUI = true)
         {
-            LogsList.Items.Add(text);
+            if(showInUI)
+                LogsList.Items.Add(text);
+
             File.AppendAllText(LogsFilePath, $"[{DateTime.Now}] {text}\n");
         }
     }
