@@ -3,11 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Management;
-using System.Net;
 using System.Net.NetworkInformation;
 using System.Security.Principal;
-using System.Windows.Forms;
-using Downloader;
 
 namespace Unity_Downloader
 {
@@ -78,7 +75,7 @@ namespace Unity_Downloader
             if (Directory.Exists(tempExtractPath)) Directory.Delete(tempExtractPath, true);
 
             if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
-                ZipFile.ExtractToDirectory(sourceFilePath, tempExtractPath);
+                ExtractZipFile(sourceFilePath, tempExtractPath);
             else
             {
                 string destinationPath = Path.Combine(extractedPathRename.To, Path.GetFileName(sourceFilePath));
@@ -86,7 +83,10 @@ namespace Unity_Downloader
                 File.Move(sourceFilePath, destinationPath);
 
                 if (Path.GetExtension(destinationPath) == ".exe")
-                    Process.Start(destinationPath);
+                {
+                    if (!RunProccess(destinationPath, out string output))
+                        OnInstallFinish?.Invoke(new Exception(output));
+                }
 
                 OnInstallFinish?.Invoke(null);
 
@@ -127,6 +127,37 @@ namespace Unity_Downloader
             OnInstallFinish?.Invoke(null);
         }
 
+        public static bool RunProccess(string filePath, out string output)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo(filePath)
+            {
+                UseShellExecute = true,
+                Verb = "runas" // Run as administrator
+            };
+
+            try
+            {
+                using (Process process = Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+
+                    if (process.ExitCode != 0)
+                    {
+                        output = $"Running \"{filePath}\" encountered an error. Please try Run It Manually";
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                output = $"Running \"{filePath}\" encountered an error. Please try Run It Manually, \n\n Erorr : {ex.Message}";
+                return false;
+            }
+
+            output = "";
+            return true;
+        }
+
         private static void MoveFileToDestination(string sourceFilePath, string destinationPath, Action<Exception> OnInstallFinish)
         {
             if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
@@ -134,7 +165,7 @@ namespace Unity_Downloader
                 if (Directory.Exists(destinationPath))
                     Directory.Delete(destinationPath, true);
 
-                ZipFile.ExtractToDirectory(sourceFilePath, destinationPath);
+                ExtractZipFile(sourceFilePath, destinationPath);
             }
             else
             {
@@ -146,7 +177,8 @@ namespace Unity_Downloader
                     File.Copy(sourceFilePath, destinationPath);
 
                 if (Path.GetExtension(destinationPath) == ".exe")
-                    Process.Start(destinationPath);
+                    if (!RunProccess(destinationPath, out string output))
+                        OnInstallFinish?.Invoke(new Exception(output));
             }
 
             OnInstallFinish?.Invoke(null);
@@ -199,6 +231,11 @@ namespace Unity_Downloader
                     return ni.Description;
 
             return "";
+        }
+
+        public static void ExtractZipFile(string zipFilePath, string extractPath)
+        {
+            ZipFile.ExtractToDirectory(zipFilePath, extractPath);
         }
     }
 }

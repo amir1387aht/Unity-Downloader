@@ -75,3 +75,24 @@ C:\Users\NIKCOM\source\repos\Unity-Downloader\Unity Downloader\bin\Debug\Unity D
 C:\Users\NIKCOM\source\repos\Unity-Downloader\Unity Downloader\bin\Debug\Unity Downloader.application
 C:\Users\NIKCOM\source\repos\Unity-Downloader\Unity Downloader\obj\Debug\Unity Downloader.exe.manifest
 C:\Users\NIKCOM\source\repos\Unity-Downloader\Unity Downloader\obj\Debug\Unity Downloader.application
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.AssemblyReference.cache
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.SuggestedBindingRedirects.cache
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity_Downloader.AppDownloadForm.resources
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity_Downloader.MainForm.resources
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity_Downloader.Properties.Resources.resources
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity_Downloader.SettingForm.resources
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.GenerateResource.cache
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.CoreCompileInputs.cache
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.exe
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.pdb
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Unity Downloader.exe.config
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Unity Downloader.exe.manifest
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Unity Downloader.application
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Unity Downloader.exe
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Unity Downloader.pdb
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Newtonsoft.Json.dll
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Newtonsoft.Json.xml
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.exe.manifest
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.application
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.CopyComplete
+C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Downloader.dll

@@ -162,7 +162,7 @@ namespace Unity_Downloader
             this.LogsList.Location = new System.Drawing.Point(27, 374);
             this.LogsList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LogsList.Name = "LogsList";
-            this.LogsList.Size = new System.Drawing.Size(522, 84);
+            this.LogsList.Size = new System.Drawing.Size(522, 100);
             this.LogsList.TabIndex = 21;
             // 
             // AppDownloadForm
@@ -187,7 +187,6 @@ namespace Unity_Downloader
             this.Name = "AppDownloadForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unity Downloader";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AppDownloadForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
