@@ -8,7 +8,7 @@ Unity Downloader is a C# Windows Forms application designed to simplify and enha
 
 - **Automatic Detection:** Identifies installed Unity editor versions.
 - **Download Management:** Displays available tools and assets for the detected Unity version.
-- **Chunk-Based Downloads:** Utilizes the Modified Version of [Downloader package by Bezzad](https://github.com/bezzad/Downloader) for efficient, reliable downloads.
+- **Chunk-Based Downloads:** This App Utilizes the [Downloader package by Bezzad](https://github.com/bezzad/Downloader) for efficient, reliable downloads.
 - **Pause and Resume:** Supports resuming downloads after an interruption, preventing the need to restart from the beginning.
 - **Automatic Installation:** Automatically installs downloaded tools and assets, simplifying the setup process.
 - **Proxy and DNS Support:** Allows configuring proxy settings and custom DNS for enhanced download flexibility and speed.
