@@ -43,7 +43,7 @@ namespace Unity_Downloader
             LastForm = lastForm;
             CurrentModule = module;
 
-            if(CurrentModule.SubModules != null && CurrentModule.SubModules.Count != 0)
+            if (CurrentModule.SubModules != null && CurrentModule.SubModules.Count != 0)
                 PendingSubModules = FindAllSubModules();
 
             tempDownloadPath = Path.Combine(Path.GetTempPath(), "unity_downloader", MainForm.SelectedEditor);
@@ -59,7 +59,30 @@ namespace Unity_Downloader
                 SettingForm.ApplyDNS();
             }
 
-            var downloadConfiguration = new DownloadConfiguration()
+            InitDownloadProvider();
+
+            SetActionButtonType(ActionButtonEnum.Pause);
+
+            ActionButton.Enabled = false;
+            DownloadProgressBar.Value = 0;
+            FileNameLabel.Text = "Current File : " + CurrentModule.Name;
+            StatusLabel.Text = "Status : Downloading...";
+            DownloadedSpaceLabel.Text = "Downloaded : 0 MB (%0)";
+            TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
+            TimeLeftLabel.Text = "Time Left : Calculating...";
+
+            ShowPendingText();
+
+            InitializeProgressBars();
+
+            SetupForm();
+
+            StartDownload();
+        }
+
+        private void InitDownloadProvider(DownloadConfiguration dc = null)
+        {
+            var downloadConfiguration = dc ?? new DownloadConfiguration()
             {
                 ChunkCount = progressBars.Length,
                 MaxTryAgainOnFailover = 5,
@@ -85,24 +108,6 @@ namespace Unity_Downloader
             downloader.ChunkDownloadProgressChanged += OnChunkDownloadProgressChanged;
             downloader.DownloadProgressChanged += OnDownloadProgressChanged;
             downloader.DownloadFileCompleted += OnDownloadFileCompleted;
-
-            SetActionButtonType(ActionButtonEnum.Pause);
-
-            ActionButton.Enabled = false;
-            DownloadProgressBar.Value = 0;
-            FileNameLabel.Text = "Current File : " + CurrentModule.Name;
-            StatusLabel.Text = "Status : Downloading...";
-            DownloadedSpaceLabel.Text = "Downloaded : 0 MB (%0)";
-            TransferRateLabel.Text = "Transfer Rate : 0 MB/Sec";
-            TimeLeftLabel.Text = "Time Left : Calculating...";
-
-            ShowPendingText();
-
-            InitializeProgressBars();
-
-            SetupForm();
-
-            StartDownload();
         }
 
         public List<UnityReleaseModule> FindAllSubModules()
@@ -294,6 +299,24 @@ namespace Unity_Downloader
                     StatusLabel.Text = "Status : An error was encountered during Downloading";
                     SetActionButtonType(ActionButtonEnum.Retry);
                     AddLog($"An error was encountered during Downloading, Error Message: {e.Error.Message}, Source: {e.Error.Source}, StackTrace:{e.Error.StackTrace}");
+
+                    if(e.Error.Message.Contains("The remote server returned an error: (416)"))
+                    {
+                        AddLog("Found an Knowen Issue, try downloaing again with diffrent setting.");
+
+                        var downloadConfiguration = new DownloadConfiguration()
+                        {
+                            ChunkCount = 0,
+                            MaxTryAgainOnFailover = 5,
+                            MaximumMemoryBufferBytes = 1024 * 1024 * 50,
+                            ParallelDownload = false,
+                            Timeout = 5000,
+                        };
+
+                        InitDownloadProvider(downloadConfiguration);
+
+                        StartDownload();
+                    }
                 });
 
                 return;
@@ -318,8 +341,10 @@ namespace Unity_Downloader
 
         }
 
-        private void OnInstallComplete(Exception e)
+        private async void OnInstallComplete(Exception e)
         {
+            await Task.Delay(300); // Avoid Instant Installing
+
             InvokeFunction(() =>
             {
                 ActionButton.Enabled = true;
@@ -349,6 +374,8 @@ namespace Unity_Downloader
 
                 isInitialDownload = false;
 
+                InitDownloadProvider();
+
                 StartDownload();
             });
         }
@@ -361,7 +388,7 @@ namespace Unity_Downloader
 
             InvokeFunction(() =>
             {
-                DownloadProgressBar.Value = (int)e.ProgressPercentage;
+                DownloadProgressBar.Value = Math.Min((int)e.ProgressPercentage, 100);
                 ProgressLabel.Text = "%" + e.ProgressPercentage.ToString("F2");
                 DownloadedSpaceLabel.Text = $"Downloaded : {Utilities.GetHumanReadableFileSize(e.ReceivedBytesSize)} (total: {Utilities.GetHumanReadableFileSize(e.TotalBytesToReceive)})";
                 TransferRateLabel.Text = $"Transfer Rate : {Utilities.GetHumanReadableFileSize((long)e.AverageBytesPerSecondSpeed)}/Sec";
@@ -390,7 +417,7 @@ namespace Unity_Downloader
 
             InvokeFunction(() =>
             {
-                UpdateProgressBar(int.Parse(e.ProgressId), (int)e.ProgressPercentage);
+                UpdateProgressBar(int.Parse(e.ProgressId), Math.Min(Math.Max(0, (int)e.ProgressPercentage), 100));
             });
         }
 
