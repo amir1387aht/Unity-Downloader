@@ -12,7 +12,6 @@ namespace Unity_Downloader
     {
         public static bool IsAdministrator()
         {
-            // Check If App Running On Administrator
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -20,12 +19,11 @@ namespace Unity_Downloader
 
         public static string GetHumanReadableFileSize(long byteCount)
         {
-            // Get Human Readable file size
-            if (byteCount < 1024 * 1024) // less than 1 MB
+            if (byteCount < 1024 * 1024)
                 return (byteCount / 1024.0).ToString("F2") + " KB";
-            else if (byteCount < 1024 * 1024 * 1024) // less than 1 GB
+            else if (byteCount < 1024 * 1024 * 1024)
                 return (byteCount / 1024.0 / 1024.0).ToString("F2") + " MB";
-            else // 1 GB or more
+            else
                 return (byteCount / 1024.0 / 1024.0 / 1024.0).ToString("F2") + " GB";
         }
 
@@ -37,189 +35,164 @@ namespace Unity_Downloader
                 {
                     selectedModule.ExtractedPathRename.From = MainForm.AppendUnityPath(selectedModule.ExtractedPathRename.From);
                     selectedModule.ExtractedPathRename.To = MainForm.AppendUnityPath(selectedModule.ExtractedPathRename.To);
-
                     HandleExtractedPathRename(sourceFilePath, selectedModule.ExtractedPathRename, OnInstallFinish);
-
-                    if (OnInstallFinish != null)
-                        OnInstallFinish(null);
                 }
                 else if (selectedModule.Destination != null)
                 {
                     selectedModule.Destination = MainForm.AppendUnityPath(selectedModule.Destination);
-
                     MoveFileToDestination(sourceFilePath, selectedModule.Destination, OnInstallFinish);
-
-                    if (OnInstallFinish != null)
-                        OnInstallFinish(null);
                 }
                 else
                 {
-                    if (OnInstallFinish != null)
-                        OnInstallFinish(new Exception($"Not Found Valid Destination for {selectedModule.Name}.\n\nError : Destination and ExtractedPathRename Are Empty."));
+                    OnInstallFinish?.Invoke(new Exception($"No valid destination for {selectedModule.Name}"));
                 }
             }
             catch (Exception ex)
             {
-                if (OnInstallFinish != null)
-                    OnInstallFinish(ex);
+                OnInstallFinish?.Invoke(ex);
             }
         }
 
-        private static void HandleExtractedPathRename(string sourceFilePath, ExtractedPathRename extractedPathRename, Action<Exception> OnInstallFinish)
+        private static void HandleExtractedPathRename(string sourceFilePath, ExtractedPathRename exRename, Action<Exception> OnInstallFinish)
         {
-            if (!Directory.Exists(extractedPathRename.To))
-                Directory.CreateDirectory(extractedPathRename.To);
-
-            string tempExtractPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(sourceFilePath));
-
-            if (Directory.Exists(tempExtractPath)) Directory.Delete(tempExtractPath, true);
-
-            if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
-                ExtractZipFile(sourceFilePath, tempExtractPath);
-            else
-            {
-                string destinationPath = Path.Combine(extractedPathRename.To, Path.GetFileName(sourceFilePath));
-
-                File.Move(sourceFilePath, destinationPath);
-
-                if (Path.GetExtension(destinationPath) == ".exe")
-                {
-                    if (!RunProccess(destinationPath, out string output))
-                        OnInstallFinish?.Invoke(new Exception(output));
-                }
-
-                OnInstallFinish?.Invoke(null);
-
-                return;
-            }
-
-            string fromLastDirectory = Path.GetFileName(extractedPathRename.From.TrimEnd(Path.DirectorySeparatorChar));
-            string[] extractedDirectories = Directory.GetDirectories(tempExtractPath);
-
-            if (extractedDirectories.Length == 1 && Path.GetFileName(extractedDirectories[0]) == fromLastDirectory)
-            {
-                // Ignore the first directory
-                string[] files = Directory.GetFiles(extractedDirectories[0], "*", SearchOption.AllDirectories);
-
-                foreach (string file in files)
-                {
-                    string relativePath = file.Substring(extractedDirectories[0].Length + 1);
-                    string destinationPath = Path.Combine(extractedPathRename.To, relativePath);
-
-                    string dirName = Path.GetDirectoryName(destinationPath);
-
-                    if (!Directory.Exists(dirName))
-                        Directory.CreateDirectory(dirName);
-
-                    if (!File.Exists(destinationPath))
-                        File.Move(file, destinationPath);
-                }
-            }
-            else
-            {
-                // Move the entire extracted content
-                Directory.Move(tempExtractPath, extractedPathRename.To);
-            }
-
-            // Clean up temporary extraction directory
-            Directory.Delete(tempExtractPath, true);
-
-            OnInstallFinish?.Invoke(null);
-        }
-
-        public static bool RunProccess(string filePath, out string output)
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo(filePath)
-            {
-                Verb = "runas" // Run as administrator
-            };
-
             try
             {
-                Process.Start(startInfo);
+                Directory.CreateDirectory(exRename.To);
+
+                string tempExtractPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(sourceFilePath));
+                if (Directory.Exists(tempExtractPath))
+                    Directory.Delete(tempExtractPath, true);
+
+                if (string.Equals(Path.GetExtension(sourceFilePath), ".zip", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExtractZipFile(sourceFilePath, tempExtractPath);
+
+                    string expectedRoot = Path.GetFileName(exRename.From.TrimEnd(Path.DirectorySeparatorChar));
+                    string[] extractedDirs = Directory.GetDirectories(tempExtractPath);
+
+                    string srcRoot = (extractedDirs.Length == 1 && Path.GetFileName(extractedDirs[0]) == expectedRoot)
+                        ? extractedDirs[0]
+                        : tempExtractPath;
+
+                    CopyDirectoryRecursively(srcRoot, exRename.To);
+                }
+                else
+                {
+                    string dest = Path.Combine(exRename.To, Path.GetFileName(sourceFilePath));
+                    Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+                    File.Copy(sourceFilePath, dest, true);
+                    File.Delete(sourceFilePath);
+
+                    if (string.Equals(Path.GetExtension(dest), ".exe", StringComparison.OrdinalIgnoreCase))
+                        if (!RunProccess(dest, out string output)) throw new Exception(output);
+
+                    OnInstallFinish?.Invoke(null);
+                    return;
+                }
+
+                Directory.Delete(tempExtractPath, true);
+                OnInstallFinish?.Invoke(null);
             }
             catch (Exception ex)
             {
-                output = $"Running \"{filePath}\" encountered an error. Please try Run It Manually, \n\n Erorr : {ex.Message}";
-                return false;
+                OnInstallFinish?.Invoke(ex);
+            }
+        }
+
+        private static void CopyDirectoryRecursively(string sourceDir, string destDir)
+        {
+            foreach (string dirPath in Directory.GetDirectories(sourceDir, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourceDir, destDir));
             }
 
-            output = "";
-            return true;
+            foreach (string filePath in Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories))
+            {
+                string targetPath = filePath.Replace(sourceDir, destDir);
+                Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
+                File.Copy(filePath, targetPath, true);
+            }
         }
 
         private static void MoveFileToDestination(string sourceFilePath, string destinationPath, Action<Exception> OnInstallFinish)
         {
-            if (Path.GetExtension(sourceFilePath).Equals(".zip", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                if (Directory.Exists(destinationPath))
-                    Directory.Delete(destinationPath, true);
+                if (string.Equals(Path.GetExtension(sourceFilePath), ".zip", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Directory.Exists(destinationPath))
+                        Directory.Delete(destinationPath, true);
 
-                ExtractZipFile(sourceFilePath, destinationPath);
+                    ExtractZipFile(sourceFilePath, destinationPath);
+                }
+                else
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+                    string dest = Path.Combine(destinationPath, Path.GetFileName(sourceFilePath));
+                    File.Copy(sourceFilePath, dest, true);
+
+                    if (string.Equals(Path.GetExtension(dest), ".exe", StringComparison.OrdinalIgnoreCase))
+                        if (!RunProccess(dest, out string output)) throw new Exception(output);
+                }
+
+                OnInstallFinish?.Invoke(null);
             }
-            else
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
-
-                destinationPath = Path.Combine(destinationPath, Path.GetFileName(sourceFilePath));
-
-                if (!File.Exists(destinationPath))
-                    File.Copy(sourceFilePath, destinationPath);
-
-                if (Path.GetExtension(destinationPath) == ".exe")
-                    if (!RunProccess(destinationPath, out string output))
-                        OnInstallFinish?.Invoke(new Exception(output));
+                OnInstallFinish?.Invoke(ex);
             }
+        }
 
-            OnInstallFinish?.Invoke(null);
+        public static bool RunProccess(string filePath, out string output)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(filePath) { Verb = "runas" });
+                output = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                output = $"Error running \"{filePath}\": {ex.Message}";
+                return false;
+            }
         }
 
         public static void SetDNS(string CombinedDNS)
         {
-            var networkConfigMng = new ManagementClass("Win32_NetworkAdapterConfiguration");
-            var networkConfigs = networkConfigMng.GetInstances();
-
-            string connectedNetwork = GetConnectedNetwork();
-
-            foreach (ManagementObject networkConfig in networkConfigs)
+            var mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            foreach (ManagementObject mo in mc.GetInstances())
             {
-                if (networkConfig["Description"].ToString().Equals(connectedNetwork))
+                if (mo["Description"].ToString() == GetConnectedNetwork())
                 {
-                    ManagementBaseObject newDNS = networkConfig.GetMethodParameters("SetDNSServerSearchOrder");
+                    var newDNS = mo.GetMethodParameters("SetDNSServerSearchOrder");
                     newDNS["DNSServerSearchOrder"] = string.IsNullOrEmpty(CombinedDNS) ? null : CombinedDNS.Split(',');
-
-                    networkConfig.InvokeMethod("SetDNSServerSearchOrder", newDNS, null);
+                    mo.InvokeMethod("SetDNSServerSearchOrder", newDNS, null);
                 }
             }
         }
 
         public static string GetDNS()
         {
-            var networkConfigMng = new ManagementClass("Win32_NetworkAdapterConfiguration");
-            var networkConfigs = networkConfigMng.GetInstances();
-
-            string connectedNetwork = GetConnectedNetwork();
-
-            foreach (ManagementObject networkConfig in networkConfigs)
+            var mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            foreach (ManagementObject mo in mc.GetInstances())
             {
-                if (networkConfig["Description"].ToString().Equals(connectedNetwork))
+                if (mo["Description"].ToString() == GetConnectedNetwork())
                 {
-                    var dnsServers = (string[])networkConfig["DNSServerSearchOrder"];
-                    return string.Join(",", dnsServers);
+                    var dns = (string[])mo["DNSServerSearchOrder"];
+                    return dns != null ? string.Join(",", dns) : "";
                 }
             }
-
-            return "No DNS found for this interface.";
+            return "";
         }
 
         public static string GetConnectedNetwork()
         {
-            NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
-
-            foreach (NetworkInterface ni in interfaces)
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
                 if (ni.OperationalStatus == OperationalStatus.Up && ni.GetIPProperties().GatewayAddresses.Count > 0)
                     return ni.Description;
-
+            }
             return "";
         }
 

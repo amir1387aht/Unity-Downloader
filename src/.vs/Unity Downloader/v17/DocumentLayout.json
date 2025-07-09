@@ -1,25 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\",
+  "WorkspaceRootPath": "D:\\Projects\\VS Projects\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|d:\\projects\\vs projects\\unity downloader\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\utilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|D:\\Projects\\VS Projects\\unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|c:\\users\\padidar\\source\\repos\\unity downloader\\unity downloader\\appdownloadform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|d:\\projects\\vs projects\\unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|D:\\Projects\\VS Projects\\unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\appdownloadform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|D:\\Projects\\VS Projects\\unity downloader\\appdownloadform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\appdownloadform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|D:\\Projects\\VS Projects\\unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{AFB1DB67-8487-43AC-95FB-1411DB35B3DD}|Unity Downloader\\Unity Downloader.csproj|solutionrelative:unity downloader\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -30,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,70 +42,81 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "Utilities.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\Utilities.cs",
+              "RelativeDocumentMoniker": "Unity Downloader\\Utilities.cs",
+              "ToolTip": "D:\\Projects\\VS Projects\\Unity Downloader\\Utilities.cs",
+              "RelativeToolTip": "Unity Downloader\\Utilities.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAowMwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-09T06:50:51.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "AppDownloadForm.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.Designer.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.Designer.cs",
               "RelativeDocumentMoniker": "Unity Downloader\\AppDownloadForm.Designer.cs",
-              "ToolTip": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.Designer.cs",
+              "ToolTip": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.Designer.cs",
               "RelativeToolTip": "Unity Downloader\\AppDownloadForm.Designer.cs",
-              "ViewState": "AQIAAKsAAAAAAAAAAAAuwLIAAABMAAAA",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAuwLIAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T11:51:30.695Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "MainForm.cs",
-              "DocumentMoniker": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\MainForm.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\MainForm.cs",
               "RelativeDocumentMoniker": "Unity Downloader\\MainForm.cs",
-              "ToolTip": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\MainForm.cs",
+              "ToolTip": "D:\\Projects\\VS Projects\\Unity Downloader\\MainForm.cs",
               "RelativeToolTip": "Unity Downloader\\MainForm.cs",
-              "ViewState": "AQIAAIIAAAAAAAAAAAAIwJYAAAAnAAAA",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAywJUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T08:21:11.905Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "MainForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\MainForm.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\MainForm.cs",
               "RelativeDocumentMoniker": "Unity Downloader\\MainForm.cs",
               "ToolTip": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\MainForm.cs [Design]",
-              "RelativeToolTip": "Unity Downloader\\MainForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T08:20:53.201Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-07-18T08:20:53.201Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "AppDownloadForm.cs",
-              "DocumentMoniker": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.cs",
               "RelativeDocumentMoniker": "Unity Downloader\\AppDownloadForm.cs",
-              "ToolTip": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.cs",
+              "ToolTip": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.cs",
               "RelativeToolTip": "Unity Downloader\\AppDownloadForm.cs",
-              "ViewState": "AQIAAFkAAAAAAAAAAIAzwGYAAAAmAAAA",
+              "ViewState": "AgIAAEABAAAAAAAAAAD4v1IBAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T08:20:57.313Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "AppDownloadForm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.cs",
+              "DocumentMoniker": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.cs",
               "RelativeDocumentMoniker": "Unity Downloader\\AppDownloadForm.cs",
-              "ToolTip": "C:\\Users\\Padidar\\source\\repos\\Unity Downloader\\Unity Downloader\\AppDownloadForm.cs [Design]",
+              "ToolTip": "D:\\Projects\\VS Projects\\Unity Downloader\\AppDownloadForm.cs [Design]",
               "RelativeToolTip": "Unity Downloader\\AppDownloadForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T08:20:54.618Z",

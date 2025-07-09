@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="Unity Downloader.exe" version="1.1.2.4" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="Unity Downloader.exe" version="1.1.2.5" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="unity_logo_icon_249311.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -74,17 +74,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>cP3FCx9RAYrg+yeqzJGbYTz9X7PLAOfaQ0Gb5V15CYQ=</dsig:DigestValue>
+        <dsig:DigestValue>gYFZESD9D3YwrE9OS1I5qMd4CeLTX0s14xLs0PNx4xA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Unity Downloader.exe.config" size="2092">
+  <file name="Unity Downloader.exe.config" size="2054">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>YpDax7ahVzFRv6aGzK7FplcQW0G2Tkk3Hsy01x6gBM0=</dsig:DigestValue>
+      <dsig:DigestValue>ZDHcHdKLlxFL0D0mwEoujWnFoRKZvONoB7+8qxROFSA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="unity_logo_icon_249311.ico" size="67646">

@@ -96,3 +96,23 @@ C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Uni
 C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.application
 C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\obj\Debug\Unity Downloader.csproj.CopyComplete
 C:\Users\NIKCOM\source\repos\Unity-Downloader\src\Unity Downloader\bin\Debug\Downloader.dll
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Unity Downloader.exe.config
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Unity Downloader.exe.manifest
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Unity Downloader.application
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Unity Downloader.exe
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Unity Downloader.pdb
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Downloader.dll
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Newtonsoft.Json.dll
+D:\Projects\VS Projects\Unity Downloader\bin\Debug\Newtonsoft.Json.xml
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.csproj.AssemblyReference.cache
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity_Downloader.AppDownloadForm.resources
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity_Downloader.MainForm.resources
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity_Downloader.Properties.Resources.resources
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity_Downloader.SettingForm.resources
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.csproj.GenerateResource.cache
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.csproj.CoreCompileInputs.cache
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.exe.manifest
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.application
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Do.C317F689.Up2Date
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.exe
+D:\Projects\VS Projects\Unity Downloader\obj\Debug\Unity Downloader.pdb
